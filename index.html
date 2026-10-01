@@ -184,15 +184,23 @@
     <!-- Karte -->
     <section class="section" id="karte" aria-labelledby="map-title">
       <h2 class="section-title reveal" id="map-title">Live-Karte</h2>
-      <a class="map-frame rip rip--photo reveal" href="/map/" aria-label="Live-Karte öffnen">
+      <div class="map-frame rip rip--photo reveal" id="map-embed">
         <span class="tape" aria-hidden="true"></span>
-        <img src="/assets/img/karte-vorschau.jpg" alt="Kartenausschnitt rund um den Spawn" width="1400" height="800" loading="lazy">
-        <span class="map-cta p-btn rip btn-accent">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg>
-          Live-Karte öffnen
-        </span>
-      </a>
-      <p class="section-note reveal">Spieler, Claims und den Spawn-Schutz siehst du auf der Live-Karte in Echtzeit – auch Nether und End.</p>
+        <div class="map-stage">
+          <img class="map-poster" src="/assets/img/karte-vorschau.jpg" alt="Kartenausschnitt rund um den Spawn" width="1400" height="800" loading="lazy">
+        </div>
+        <div class="map-actions">
+          <a class="p-btn rip btn-accent" href="http://map.zevkev.de:17165/" target="_blank" rel="noopener" data-map="open">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>
+            <span>Live-Karte öffnen</span>
+          </a>
+          <button class="p-btn rip rip--b" type="button" data-map="full">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+            <span>Vollbild</span>
+          </button>
+        </div>
+      </div>
+      <p class="section-note reveal">Spieler, Claims und den Spawn-Schutz siehst du auf der Live-Karte in Echtzeit – auch Nether und End. Im Vollbild bringt dich „Zurück zur Website“ wieder hierher.</p>
     </section>
 
     <div class="scissor-line" aria-hidden="true"></div>
@@ -204,7 +212,7 @@
         <h2 id="ranks-title">Ränge</h2>
         <ul class="ranks">
           <li><img src="/assets/img/badges/spieler.png" alt="SPIELER" width="46" height="9"><span>Jeder ab dem ersten Login</span></li>
-          <li><img src="/assets/img/badges/supporter.png" alt="SUP" width="22" height="9"><span>Unterstützt den Server – mehr Claims &amp; Homes</span></li>
+          <li><img src="/assets/img/badges/vip.png" alt="VIP" width="22" height="9"><span>Unterstützt den Server – mehr Claims &amp; Homes</span></li>
           <li><img src="/assets/img/badges/freunde.png" alt="FREUND" width="40" height="9"><span>Freunde des Servers</span></li>
           <li><img src="/assets/img/badges/mod.png" alt="MOD" width="22" height="9"><span>Team – hilft und moderiert</span></li>
           <li><img src="/assets/img/badges/owner.png" alt="OWNER" width="34" height="9"><span>Serverleitung</span></li>
@@ -241,6 +249,21 @@
       </div>
     </section>
   </main>
+
+  <div class="map-overlay" id="map-overlay" hidden role="dialog" aria-label="Live-Karte im Vollbild">
+    <div class="map-bar">
+      <span class="map-bar-title">ZEVKEV <b>Live-Karte</b></span>
+      <a class="p-btn rip rip--b" href="http://map.zevkev.de:17165/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg>
+        <span>Neuer Tab</span>
+      </a>
+      <button class="p-btn rip btn-accent" type="button" data-map="close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+        <span class="label-long">Zurück zur Website</span><span class="label-short" aria-hidden="true">Zurück</span>
+      </button>
+    </div>
+    <div class="map-overlay-stage"></div>
+  </div>
 
   <footer class="site-footer">
     <div class="footer-inner">

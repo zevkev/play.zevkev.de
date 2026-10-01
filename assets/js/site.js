@@ -9,6 +9,13 @@
   ];
   var REFRESH_MS = 60000;
 
+  // Live-Karte (squaremap auf dem Spielserver). Browser blockieren eine unverschlüsselte (http) Seite in einer
+  // https-Seite. Sobald die Karte eine https-Adresse hat (z. B. über einen Cloudflare-Worker), hier eintragen –
+  // dann läuft sie direkt auf der Website. Bis dahin öffnet sie sich in einem neuen Tab.
+  var MAP_SECURE_URL = "";
+  var MAP_DIRECT_URL = "http://map.zevkev.de:17165/";
+  var MAP_SLEEP_MS = 120000; // Karte im Hintergrund-Tab nach 2 Minuten anhalten (spart Abfragen)
+
   // ── Hell/Dunkel ───────────────────────────────────────────────────────────
   var toggle = document.querySelector(".theme-toggle");
   if (toggle) {
@@ -65,6 +72,131 @@
   } else {
     revealed.forEach(function (el) { el.classList.add("is-visible"); });
   }
+
+  // ── Live-Karte: einbetten, Vollbild, zurück zur Website ───────────────────
+  function mapUrl() {
+    if (MAP_SECURE_URL) return MAP_SECURE_URL;
+    return location.protocol === "https:" ? "" : MAP_DIRECT_URL;
+  }
+
+  function openDirect() {
+    window.open(MAP_DIRECT_URL, "_blank", "noopener");
+  }
+
+  function makeFrame(src) {
+    var frame = document.createElement("iframe");
+    frame.className = "map-iframe";
+    frame.src = src;
+    frame.title = "ZEVKEV Live-Karte";
+    frame.setAttribute("allow", "fullscreen");
+    frame.setAttribute("referrerpolicy", "no-referrer");
+    return frame;
+  }
+
+  var embed = document.getElementById("map-embed");
+  var overlay = document.getElementById("map-overlay");
+  var inlineFrame = null;
+
+  function loadInline() {
+    if (inlineFrame || !mapUrl()) return;
+    inlineFrame = makeFrame(mapUrl());
+    embed.querySelector(".map-stage").appendChild(inlineFrame);
+    embed.classList.add("is-live");
+  }
+
+  function openOverlay() {
+    var src = mapUrl();
+    if (!src) { openDirect(); return; }
+    if (!overlay) return;
+    var stage = overlay.querySelector(".map-overlay-stage");
+    if (!stage.querySelector("iframe")) stage.appendChild(makeFrame(src));
+    if (inlineFrame) inlineFrame.src = "about:blank"; // nicht doppelt laden
+    overlay.hidden = false;
+    document.body.classList.add("map-open");
+    var back = overlay.querySelector("[data-map='close']");
+    if (back) back.focus();
+    if (overlay.requestFullscreen) overlay.requestFullscreen().catch(function () { /* Fenster füllt trotzdem */ });
+  }
+
+  function closeOverlay() {
+    if (!overlay || overlay.hidden) return;
+    var frame = overlay.querySelector("iframe");
+    if (frame) frame.remove();
+    overlay.hidden = true;
+    document.body.classList.remove("map-open");
+    if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(function () {});
+    if (inlineFrame) inlineFrame.src = mapUrl();
+    var section = document.getElementById("karte");
+    if (section) section.scrollIntoView({ block: "start" });
+  }
+
+  if (embed) {
+    var openLink = embed.querySelector("[data-map='open']");
+    var fullButton = embed.querySelector("[data-map='full']");
+    if (mapUrl()) {
+      // Karte lädt von selbst, sobald man in ihre Nähe scrollt (nicht schon beim Seitenaufruf)
+      if (openLink) openLink.hidden = true;
+      if ("IntersectionObserver" in window) {
+        var mapObserver = new IntersectionObserver(function (entries) {
+          if (entries.some(function (entry) { return entry.isIntersecting; })) {
+            loadInline();
+            mapObserver.disconnect();
+          }
+        }, { rootMargin: "600px 0px" });
+        mapObserver.observe(embed);
+      } else {
+        loadInline();
+      }
+    } else if (fullButton) {
+      fullButton.hidden = true; // ohne https-Adresse geht die Karte nur im eigenen Tab
+    }
+    if (fullButton) fullButton.addEventListener("click", openOverlay);
+  }
+  if (overlay) {
+    overlay.addEventListener("click", function (event) {
+      if (event.target.closest("[data-map='close']")) closeOverlay();
+    });
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && !overlay.hidden) closeOverlay();
+    });
+    // Browser-Vollbild mit Esc beendet → auch die Karte schließen und zurück zur Website
+    document.addEventListener("fullscreenchange", function () {
+      if (!document.fullscreenElement && !overlay.hidden) closeOverlay();
+    });
+  }
+
+  // Eigene Kartenseite /map/: Karte füllt das Fenster, oben die Leiste mit "Zurück zur Website"
+  var mapPage = document.getElementById("map-page");
+  if (mapPage && mapUrl()) {
+    var pageStage = mapPage.querySelector(".map-overlay-stage");
+    pageStage.innerHTML = "";
+    pageStage.appendChild(makeFrame(mapUrl()));
+    var fullButton = mapPage.querySelector("[data-map='fullscreen']");
+    if (fullButton && mapPage.requestFullscreen) {
+      fullButton.hidden = false;
+      fullButton.addEventListener("click", function () {
+        if (document.fullscreenElement) document.exitFullscreen().catch(function () {});
+        else mapPage.requestFullscreen().catch(function () {});
+      });
+    }
+  }
+
+  // Im Hintergrund-Tab anhalten, beim Zurückkommen neu laden
+  var sleepTimer = null;
+  document.addEventListener("visibilitychange", function () {
+    var frames = document.querySelectorAll(".map-iframe");
+    if (!frames.length) return;
+    if (document.hidden) {
+      sleepTimer = setTimeout(function () {
+        frames.forEach(function (frame) { frame.dataset.sleeping = frame.src; frame.src = "about:blank"; });
+      }, MAP_SLEEP_MS);
+    } else {
+      clearTimeout(sleepTimer);
+      frames.forEach(function (frame) {
+        if (frame.dataset.sleeping) { frame.src = frame.dataset.sleeping; delete frame.dataset.sleeping; }
+      });
+    }
+  });
 
   // ── Live-Status ───────────────────────────────────────────────────────────
   var statusBox = document.getElementById("status");

@@ -82,6 +82,7 @@ body {
 a { color: inherit; }
 img { max-width: 100%; display: block; }
 button { font-family: inherit; cursor: pointer; }
+[hidden] { display: none !important; }
 code { font-family: "Cascadia Mono", Consolas, "Courier New", monospace; }
 
 h1, h2, h3, .display-font {
@@ -290,11 +291,36 @@ h1, h2, h3, .display-font {
 .feature-icon svg { width: 28px; height: 28px; }
 
 /* Karte: Foto auf Kork */
-.map-frame { display: block; width: 100%; max-width: 980px; padding: 18px; box-sizing: border-box; text-decoration: none; transform: rotate(-0.6deg); transition: transform 0.3s ease; }
-.map-frame:hover { transform: rotate(0deg) scale(1.01); }
-.map-frame img { width: 100%; height: auto; border: 6px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,.3); box-sizing: border-box; }
-.map-cta { position: absolute; right: 34px; bottom: 34px; }
+.map-frame { display: block; width: 100%; max-width: 980px; padding: 18px; box-sizing: border-box; transform: rotate(-0.6deg); transition: transform 0.3s ease; }
 .map-frame.reveal.is-visible { transform: rotate(-0.6deg); }
+.map-frame.is-live, .map-frame.is-live.reveal.is-visible { transform: none; } /* gerade, damit die Karte sauber bedienbar ist */
+.map-stage { position: relative; aspect-ratio: 7 / 4; border: 6px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,.3); box-sizing: border-box; background: var(--blue-mat-dark); overflow: hidden; }
+.map-poster { width: 100%; height: 100%; object-fit: cover; }
+.map-iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: var(--blue-mat-dark); }
+.map-actions { position: absolute; right: 34px; bottom: 34px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
+.map-frame.is-live .map-actions { position: static; margin-top: 14px; }
+
+/* Vollbild: eigene Ebene über der ganzen Seite, oben die Leiste mit "Zurück zur Website" */
+.map-overlay { position: fixed; inset: 0; z-index: 1000; display: flex; flex-direction: column; background: var(--blue-mat); }
+.map-bar { display: flex; align-items: center; gap: 14px; padding: 10px 16px; background: var(--paper-accent); box-shadow: 0 4px 14px rgba(0,0,0,.3); flex-wrap: wrap; position: relative; z-index: 1; }
+.map-bar .p-btn { padding: 9px 18px; font-size: 0.98rem; }
+.map-bar-title { font-family: "Bebas Neue", "Futura", "Trebuchet MS", Arial, sans-serif; font-size: 1.6rem; letter-spacing: 0.5px; color: var(--text-dark); margin-right: auto; }
+.map-bar-title b { color: var(--mc-blue); font-weight: 400; }
+.map-overlay-stage { position: relative; flex: 1; min-height: 0; }
+.map-fallback { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 16px; text-align: center; color: #fff; }
+.map-fallback img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.45; z-index: -1; }
+.map-fallback p { max-width: 520px; line-height: 1.5; text-shadow: 0 1px 4px rgba(0,0,0,.6); margin: 0; }
+body.map-open { overflow: hidden; }
+.map-bar .label-short { display: none; }
+@media (max-width: 600px) {
+  .map-bar { gap: 8px; padding: 8px 10px; flex-wrap: nowrap; }
+  .map-bar .p-btn { padding: 9px 12px; gap: 8px; }
+  .map-bar-title { font-size: 1.15rem; white-space: nowrap; }
+  /* Nebenknöpfe nur als Symbol (Text bleibt für Screenreader), "Zurück" kurz */
+  .map-bar .p-btn:not(.btn-accent) span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .map-bar .label-long { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .map-bar .label-short { display: inline; }
+}
 
 /* Ränge + Regeln */
 .two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; align-items: start; max-width: 1000px; margin-top: 4px; }
@@ -338,7 +364,10 @@ h1, h2, h3, .display-font {
   .tape--right { display: none; }
   .hero-actions .p-btn { width: 100%; justify-content: center; }
   .map-frame { padding: 10px; }
-  .map-cta { position: static; margin: 14px auto 2px; display: flex; width: fit-content; }
+  .map-actions { position: static; margin-top: 14px; justify-content: center; }
+  .map-stage { aspect-ratio: 4 / 3; }
+  .map-bar { padding: 8px 12px; gap: 10px; }
+  .map-bar-title { font-size: 1.3rem; }
   .paper { padding: 36px 22px 26px; }
   .scissor-line { margin: 44px auto; }
 }
