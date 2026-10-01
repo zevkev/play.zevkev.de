@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ZEVKEV Minecraft-Server – play.zevkev.de</title>
+  <meta name="description" content="ZEVKEV – deutscher Survival-Server für Minecraft Java 26.3. IP: play.zevkev.de. Claims, Jobs, Auktionshaus, eigene Verzauberungen, neuer Nether & End, Live-Karte und Discord.">
+  <link rel="canonical" href="https://play.zevkev.de/">
+  <meta name="theme-color" content="#234d70">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/img/icon-192.png">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ZEVKEV">
+  <meta property="og:title" content="ZEVKEV Minecraft-Server – play.zevkev.de">
+  <meta property="og:description" content="Deutscher Survival-Server: Claims, Jobs, Auktionshaus, eigene Verzauberungen, Live-Karte. IP: play.zevkev.de">
+  <meta property="og:url" content="https://play.zevkev.de/">
+  <meta property="og:image" content="https://play.zevkev.de/assets/img/og-image.png">
+  <meta property="og:locale" content="de_DE">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ZEVKEV Minecraft-Server",
+    "alternateName": "play.zevkev.de",
+    "url": "https://play.zevkev.de/",
+    "description": "Deutscher Minecraft-Survival-Server (Java 26.3) mit Claims, Jobs, Auktionshaus, eigenen Verzauberungen und Live-Karte. Server-IP: play.zevkev.de",
+    "inLanguage": "de",
+    "publisher": { "@type": "Person", "name": "ZevKev", "url": "https://zevkev.de/" }
+  }
+  </script>
+
+  <link rel="preload" href="/assets/fonts/BebasNeue-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script>
+    // Theme vor dem ersten Zeichnen setzen (kein Aufblitzen des falschen Modus)
+    try {
+      var saved = localStorage.getItem("zevkev-theme");
+      var dark = saved ? saved === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+    } catch (e) { document.documentElement.setAttribute("data-theme", "light"); }
+  </script>
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="site-logo" href="#start" aria-label="ZEVKEV Minecraft – nach oben">
+        <img src="/assets/img/server-icon.png" alt="" width="34" height="34">
+        <span>ZEVKEV <span class="logo-sub">Minecraft</span></span>
+      </a>
+      <nav class="site-nav" aria-label="Seitenbereiche">
+        <a href="#mitspielen">Mitspielen</a>
+        <a href="#features">Features</a>
+        <a href="#karte">Karte</a>
+        <a href="#regeln">Regeln</a>
+        <a href="#discord">Discord</a>
+      </nav>
+      <div class="header-actions">
+        <button class="theme-toggle" type="button" aria-label="Hell/Dunkel umschalten">
+          <span class="theme-toggle-scene" aria-hidden="true">
+            <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8 6 18M18 6l1.8-1.8"/></svg>
+            <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1z"/></svg>
+          </span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-body" id="start">
+    <!-- Kopf: Logo, IP, Live-Status -->
+    <section class="hero rip rip--accent reveal" aria-labelledby="hero-title">
+      <span class="tape" aria-hidden="true"></span>
+      <span class="tape tape--right" aria-hidden="true"></span>
+      <img class="hero-logo" src="/assets/img/zevkev-logo.png" alt="ZEVKEV" width="960" height="263">
+      <h1 id="hero-title">Survival-Server für Minecraft&nbsp;Java</h1>
+      <p class="hero-lead">Bauen, claimen, handeln – mit fairer Wirtschaft, eigenen Verzauberungen und einer netten Community.</p>
+
+      <div class="ip-box">
+        <span class="ip-label">Server-Adresse</span>
+        <code class="ip" id="server-ip">play.zevkev.de</code>
+        <button class="p-btn rip btn-accent copy-btn" type="button" data-copy="play.zevkev.de">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>
+          <span class="copy-label">Kopieren</span>
+        </button>
+      </div>
+
+      <div class="status" id="status" aria-live="polite">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span class="status-text">Status wird geladen …</span>
+      </div>
+      <ul class="player-list" id="player-list" aria-label="Spieler online"></ul>
+
+      <div class="hero-actions">
+        <a class="p-btn rip discord-btn" href="https://discord.gg/pyAZvHyM65" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.3 4.4A19.6 19.6 0 0 0 15.4 3l-.6 1.3a18 18 0 0 0-5.6 0L8.6 3a19.6 19.6 0 0 0-4.9 1.4C.6 9 0 13.5.3 18a19.8 19.8 0 0 0 6 3l1.3-2.1a12.8 12.8 0 0 1-2-1l.5-.4a14 14 0 0 0 11.8 0l.5.4c-.6.4-1.3.7-2 1l1.3 2.1a19.7 19.7 0 0 0 6-3c.4-5.2-.7-9.7-3.4-13.6zM8.7 15.3c-1.2 0-2.1-1.1-2.1-2.4s.9-2.4 2.1-2.4 2.1 1.1 2.1 2.4-.9 2.4-2.1 2.4zm6.6 0c-1.2 0-2.1-1.1-2.1-2.4s.9-2.4 2.1-2.4 2.1 1.1 2.1 2.4-.9 2.4-2.1 2.4z"/></svg>
+          Discord beitreten
+        </a>
+        <a class="p-btn rip rip--b" href="/map/">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg>
+          Live-Karte
+        </a>
+      </div>
+    </section>
+
+    <div class="scissor-line" aria-hidden="true"></div>
+
+    <!-- So kommst du rein -->
+    <section class="section" id="mitspielen" aria-labelledby="join-title">
+      <h2 class="section-title reveal" id="join-title">So spielst du mit</h2>
+      <div class="c-grid steps">
+        <article class="c-card rip tilt-a reveal">
+          <span class="step-no">1</span>
+          <h3>Minecraft starten</h3>
+          <p>Minecraft <b>Java Edition 26.3</b> öffnen. Andere Versionen klappen meist auch.</p>
+        </article>
+        <article class="c-card rip rip--b tilt-b reveal">
+          <span class="step-no">2</span>
+          <h3>Server hinzufügen</h3>
+          <p>Mehrspieler öffnen, <b>Server hinzufügen</b> und als Adresse <b>play.zevkev.de</b> eintragen.</p>
+        </article>
+        <article class="c-card rip rip--c tilt-c reveal">
+          <span class="step-no">3</span>
+          <h3>Paket annehmen</h3>
+          <p>Das kleine Ressourcenpaket annehmen – für Logo und Rang-Abzeichen. Keine Mods nötig.</p>
+        </article>
+      </div>
+    </section>
+
+    <div class="scissor-line" aria-hidden="true"></div>
+
+    <!-- Features -->
+    <section class="section" id="features" aria-labelledby="features-title">
+      <h2 class="section-title reveal" id="features-title">Was dich erwartet</h2>
+      <div class="c-grid features">
+        <article class="c-card rip tilt-a reveal">
+          <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.4 8.3 8 9 4.6-.7 8-4 8-9V6l-8-3z"/><path d="m9 12 2 2 4-4"/></svg></span>
+          <h3>Land sichern</h3>
+          <p>Chunks claimen, Freunde einladen, Gilden und Bündnisse – dein Zeug bleibt deins.</p>
+        </article>
+        <article class="c-card rip rip--b rip--accent tilt-b reveal">
+          <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 7v10M14.5 9.5c-.5-.9-1.5-1.5-2.7-1.5-1.6 0-2.8.9-2.8 2s1 1.7 2.8 2 2.9.9 2.9 2.1-1.3 2-2.9 2c-1.3 0-2.4-.6-2.9-1.6"/></svg></span>
+          <h3>Jobs &amp; Wirtschaft</h3>
+          <p>Ein Job, faire Löhne, Auktionshaus und ein Shop für Grundmaterialien – ohne Inflation.</p>
+        </article>
+        <article class="c-card rip rip--c tilt-c reveal">
+          <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z"/></svg></span>
+          <h3>Eigene Verzauberungen</h3>
+          <p>Aderabbau, Tunnelbau 3x3 und Schmelzen – als echte Verzauberungen.</p>
+        </article>
+        <article class="c-card rip rip--b tilt-a reveal">
+          <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4 0 7-2.8 7-6.8 0-3.6-2.6-6.2-4.2-8.2-.4 2.2-1.6 3.4-2.8 4C12 8 10.7 5.2 8.4 2 8.6 6 5 9 5 15.2 5 19.2 8 22 12 22z"/></svg></span>
+          <h3>Neuer Nether &amp; End</h3>
+          <p>Incendium und Nullscape machen beide Dimensionen komplett neu.</p>
+        </article>
+        <article class="c-card rip rip--c rip--pink tilt-b reveal">
+          <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg></span>
+          <h3>Homes &amp; Teleport</h3>
+          <p>/sethome, /tpa, /rtp und /back – schnell dahin, wo du hinwillst.</p>
+        </article>
+        <article class="c-card rip tilt-c reveal">
+          <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/></svg></span>
+          <h3>Voice-Chat</h3>
+          <p>Mit Simple Voice Chat hörst du Spieler in deiner Nähe – die Mod ist freiwillig.</p>
+        </article>
+        <article class="c-card rip rip--b tilt-a reveal">
+          <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14v3"/></svg></span>
+          <h3>Fair &amp; geschützt</h3>
+          <p>Anti-Cheat, Anti-Xray, Claim-Schutz und Block-Protokoll gegen Griefer.</p>
+        </article>
+        <article class="c-card rip rip--c rip--accent tilt-b reveal">
+          <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>
+          <h3>Live-Karte</h3>
+          <p>Alle Claims und Spieler in Echtzeit – direkt im Browser.</p>
+        </article>
+      </div>
+    </section>
+
+    <div class="scissor-line" aria-hidden="true"></div>
+
+    <!-- Karte -->
+    <section class="section" id="karte" aria-labelledby="map-title">
+      <h2 class="section-title reveal" id="map-title">Live-Karte</h2>
+      <a class="map-frame rip rip--photo reveal" href="/map/" aria-label="Live-Karte öffnen">
+        <span class="tape" aria-hidden="true"></span>
+        <img src="/assets/img/karte-vorschau.jpg" alt="Kartenausschnitt rund um den Spawn" width="1400" height="800" loading="lazy">
+        <span class="map-cta p-btn rip btn-accent">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg>
+          Live-Karte öffnen
+        </span>
+      </a>
+      <p class="section-note reveal">Spieler, Claims und den Spawn-Schutz siehst du auf der Live-Karte in Echtzeit – auch Nether und End.</p>
+    </section>
+
+    <div class="scissor-line" aria-hidden="true"></div>
+
+    <!-- Ränge + Regeln -->
+    <section class="section two-col" aria-label="Ränge und Regeln">
+      <article class="paper rip rip--b reveal" id="raenge" aria-labelledby="ranks-title">
+        <span class="tape" aria-hidden="true"></span>
+        <h2 id="ranks-title">Ränge</h2>
+        <ul class="ranks">
+          <li><img src="/assets/img/badges/spieler.png" alt="SPIELER" width="46" height="9"><span>Jeder ab dem ersten Login</span></li>
+          <li><img src="/assets/img/badges/supporter.png" alt="SUP" width="22" height="9"><span>Unterstützt den Server – mehr Claims &amp; Homes</span></li>
+          <li><img src="/assets/img/badges/freunde.png" alt="FREUND" width="40" height="9"><span>Freunde des Servers</span></li>
+          <li><img src="/assets/img/badges/mod.png" alt="MOD" width="22" height="9"><span>Team – hilft und moderiert</span></li>
+          <li><img src="/assets/img/badges/owner.png" alt="OWNER" width="34" height="9"><span>Serverleitung</span></li>
+        </ul>
+      </article>
+      <article class="paper rip rip--c reveal" id="regeln" aria-labelledby="rules-title">
+        <span class="tape" aria-hidden="true"></span>
+        <h2 id="rules-title">Regeln</h2>
+        <ol class="rules">
+          <li>Sei freundlich.</li>
+          <li>Kein Griefing.</li>
+          <li>Nichts klauen.</li>
+          <li>Keine Hacks oder X-Ray.</li>
+          <li>Keine Bugs ausnutzen.</li>
+          <li>Kein Spam, keine Werbung.</li>
+          <li>Keine Lag-Farmen.</li>
+          <li>PvP nur, wenn beide wollen.</li>
+          <li>Im Zweifel entscheidet das Team.</li>
+        </ol>
+        <p class="rules-note">Verstöße: Warnung, Kick oder Bann. Ingame jederzeit: <code>/regeln</code></p>
+      </article>
+    </section>
+
+    <!-- Discord -->
+    <section class="discord-zone reveal" id="discord" aria-labelledby="discord-title">
+      <div class="discord-card rip rip--b">
+        <span class="tape" aria-hidden="true"></span>
+        <h2 id="discord-title">Komm in den Discord</h2>
+        <p>Neuigkeiten, Events, Hilfe – und der Chat ist mit dem Spiel verbunden.</p>
+        <a class="p-btn rip discord-btn" href="https://discord.gg/pyAZvHyM65" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.3 4.4A19.6 19.6 0 0 0 15.4 3l-.6 1.3a18 18 0 0 0-5.6 0L8.6 3a19.6 19.6 0 0 0-4.9 1.4C.6 9 0 13.5.3 18a19.8 19.8 0 0 0 6 3l1.3-2.1a12.8 12.8 0 0 1-2-1l.5-.4a14 14 0 0 0 11.8 0l.5.4c-.6.4-1.3.7-2 1l1.3 2.1a19.7 19.7 0 0 0 6-3c.4-5.2-.7-9.7-3.4-13.6zM8.7 15.3c-1.2 0-2.1-1.1-2.1-2.4s.9-2.4 2.1-2.4 2.1 1.1 2.1 2.4-.9 2.4-2.1 2.4zm6.6 0c-1.2 0-2.1-1.1-2.1-2.4s.9-2.4 2.1-2.4 2.1 1.1 2.1 2.4-.9 2.4-2.1 2.4z"/></svg>
+          discord.gg/pyAZvHyM65
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <nav class="footer-links" aria-label="Weitere Seiten">
+        <a href="https://zevkev.de/">zevkev.de</a>
+        <a href="https://zevkev.de/impressum/">Impressum</a>
+        <a href="https://zevkev.de/datenschutz/">Datenschutz</a>
+      </nav>
+      <p class="footer-note">Live-Status über <a href="https://mcstatus.io/" target="_blank" rel="noopener">mcstatus.io</a> (dein Browser fragt den Dienst direkt ab).
+        Kein offizielles Minecraft-Produkt. Nicht von Mojang oder Microsoft genehmigt oder mit ihnen verbunden.</p>
+    </div>
+  </footer>
+</body>
+</html>
