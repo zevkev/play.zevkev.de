@@ -198,6 +198,24 @@
     }
   });
 
+  // ── VIP-Shop (Tebex) ──────────────────────────────────────────────────────
+  // Sobald der Tebex-Shop steht, hier die Links der beiden Pakete eintragen (1 Monat / 6 Monate).
+  var TEBEX_LINKS = { "1": "", "6": "" };
+  document.querySelectorAll("[data-tebex]").forEach(function (button) {
+    var link = TEBEX_LINKS[button.getAttribute("data-tebex")];
+    if (link) {
+      button.href = link;
+      button.target = "_blank";
+      button.rel = "noopener";
+      return;
+    }
+    button.classList.add("is-soon");
+    button.setAttribute("aria-disabled", "true");
+    var label = button.querySelector(".vip-buy-label");
+    if (label) label.textContent = "Shop öffnet bald";
+    button.addEventListener("click", function (event) { event.preventDefault(); });
+  });
+
   // ── Live-Status ───────────────────────────────────────────────────────────
   var statusBox = document.getElementById("status");
   var statusText = statusBox ? statusBox.querySelector(".status-text") : null;

@@ -330,6 +330,18 @@ body.map-open { overflow: hidden; }
 .ranks li { display: flex; align-items: center; gap: 14px; line-height: 1.35; }
 .ranks img { height: 27px; width: auto; image-rendering: pixelated; flex-shrink: 0; }
 .ranks span { color: var(--text-muted); }
+.ranks a { color: var(--mc-blue); font-weight: bold; }
+
+/* ── VIP-Seite ─────────────────────────────────────────────────────────── */
+.vip-badge { height: 54px; width: auto; image-rendering: pixelated; margin: 4px auto 14px; }
+.vip-plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 40px; width: 100%; max-width: 760px; }
+.vip-plan { position: relative; }
+.c-card .vip-price { font-family: "Bebas Neue", "Futura", "Trebuchet MS", Arial, sans-serif; font-size: 3.4rem; line-height: 1; margin: 8px 0 4px; color: var(--mc-blue); }
+.vip-tag { position: absolute; top: -12px; right: 18px; background: var(--accent-green); color: #fff; font-weight: bold; font-size: 0.85rem;
+  padding: 5px 12px; border-radius: 999px; box-shadow: 0 3px 8px rgba(0,0,0,.25); transform: rotate(4deg); }
+.vip-buy { margin-top: 16px; }
+.vip-buy.is-soon { opacity: 0.7; cursor: default; }
+.vip-buy.is-soon:hover { transform: none; }
 .rules { margin: 0; padding-left: 1.4em; display: grid; gap: 8px; line-height: 1.4; }
 .rules li::marker { font-weight: bold; color: var(--mc-blue); }
 .rules-note { margin: 18px 0 0; font-size: 0.92rem; color: var(--text-muted); }
