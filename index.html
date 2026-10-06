@@ -56,7 +56,7 @@
         <a href="#mitspielen">Mitspielen</a>
         <a href="#features">Features</a>
         <a href="#karte">Karte</a>
-        <a href="#voten">Voten</a>
+        <a href="/vote/">Voten</a>
         <a href="#regeln">Regeln</a>
         <a href="/vip/">VIP</a>
         <a href="#discord">Discord</a>
@@ -77,7 +77,7 @@
     <section class="hero rip rip--accent reveal" aria-labelledby="hero-title">
       <span class="tape" aria-hidden="true"></span>
       <span class="tape tape--right" aria-hidden="true"></span>
-      <img class="hero-logo" src="/assets/img/zevkev-logo.png" alt="ZEVKEV" width="720" height="620">
+      <img class="hero-logo" src="/assets/img/zevkev-logo.png" alt="ZEVKEV" width="960" height="265">
       <h1 id="hero-title">Survival-Server für Minecraft&nbsp;Java</h1>
       <p class="hero-lead">Bauen, claimen, handeln – mit fairer Wirtschaft, großem Shop, Vote-Kiste und einer netten Community.</p>
 
@@ -193,6 +193,36 @@
 
     <div class="scissor-line" aria-hidden="true"></div>
 
+    <section class="section" id="galerie" aria-labelledby="gallery-title">
+      <h2 class="section-title reveal" id="gallery-title">Eindrücke</h2>
+      <div class="gallery">
+        <figure class="shot rip rip--photo tilt-a reveal">
+          <a href="/assets/img/galerie/schiff-sonnenuntergang.webp" target="_blank" rel="noopener">
+            <img src="/assets/img/galerie/schiff-sonnenuntergang-800.webp" srcset="/assets/img/galerie/schiff-sonnenuntergang-800.webp 800w, /assets/img/galerie/schiff-sonnenuntergang.webp 1600w"
+                 sizes="(max-width: 700px) 92vw, 33vw" width="800" height="450" loading="lazy" alt="Selbstgebautes Segelschiff im Sonnenuntergang auf dem Meer">
+          </a>
+          <figcaption>Abendfahrt im Sonnenuntergang</figcaption>
+        </figure>
+        <figure class="shot rip rip--photo tilt-b reveal">
+          <a href="/assets/img/galerie/schiff-kueste.webp" target="_blank" rel="noopener">
+            <img src="/assets/img/galerie/schiff-kueste-800.webp" srcset="/assets/img/galerie/schiff-kueste-800.webp 800w, /assets/img/galerie/schiff-kueste.webp 1600w"
+                 sizes="(max-width: 700px) 92vw, 33vw" width="800" height="450" loading="lazy" alt="Segelschiff vor der Küste, im Vordergrund Gras am Ufer">
+          </a>
+          <figcaption>Vor Anker an der Küste</figcaption>
+        </figure>
+        <figure class="shot rip rip--photo tilt-c reveal">
+          <a href="/assets/img/galerie/schiff-nacht.webp" target="_blank" rel="noopener">
+            <img src="/assets/img/galerie/schiff-nacht-800.webp" srcset="/assets/img/galerie/schiff-nacht-800.webp 800w, /assets/img/galerie/schiff-nacht.webp 1600w"
+                 sizes="(max-width: 700px) 92vw, 33vw" width="800" height="450" loading="lazy" alt="Segelschiff bei Nacht unter einem Sternenhimmel mit Polarlicht">
+          </a>
+          <figcaption>Nachtwache unter Sternen</figcaption>
+        </figure>
+      </div>
+      <p class="section-note reveal">Gebaut auf ZEVKEV – aufgenommen mit Shadern.</p>
+    </section>
+
+    <div class="scissor-line" aria-hidden="true"></div>
+
     <section class="section" id="voten" aria-labelledby="vote-title">
       <h2 class="section-title reveal" id="vote-title">Voten</h2>
       <article class="paper rip rip--c reveal vote-card">
@@ -200,7 +230,8 @@
         <p>Dein Vote bringt den Server in den Serverlisten nach oben. Als Dankeschön gibt es pro Vote einen
           <b>Scheck über 500 Coins</b> und einen <b>Vote-Schlüssel</b> für die Kiste am Spawn – auch wenn du gerade offline bist.</p>
         <div class="vote-links" id="vote-links"></div>
-        <p class="vote-hint">Im Spiel: <code>/vote</code> zeigt alle Links, Linksklick auf die Vote-Kiste zeigt den Inhalt mit Chancen.</p>
+        <p class="vote-hint">Im Spiel: <code>/vote</code> zeigt alle Links, Linksklick auf die Vote-Kiste zeigt den Inhalt mit Chancen.
+          <a href="/vote/">Alle Gewinne und Chancen ansehen</a></p>
       </article>
     </section>
 
@@ -237,7 +268,7 @@
         <h2 id="ranks-title">Ränge</h2>
         <ul class="ranks">
           <li><img src="/assets/img/badges/spieler.png" alt="SPIELER" width="46" height="9"><span>Jeder ab dem ersten Login – bis 15 Claims</span></li>
-          <li><img src="/assets/img/badges/vip.png" alt="VIP" width="22" height="9"><span>Unterstützt den Server – 25 statt 15 Claims. <a href="/vip/">VIP werden</a></span></li>
+          <li><img src="/assets/img/badges/vip.png" alt="VIP" width="22" height="9"><span>Unterstützt den Server – 25 statt 15 Claims. <span class="soon-tag">bald</span> <a href="/vip/">Mehr erfahren</a></span></li>
           <li><img src="/assets/img/badges/freunde.png" alt="FREUND" width="40" height="9"><span>Freunde des Servers</span></li>
           <li><img src="/assets/img/badges/mod.png" alt="MOD" width="22" height="9"><span>Team – hilft und moderiert</span></li>
           <li><img src="/assets/img/badges/owner.png" alt="OWNER" width="34" height="9"><span>Serverleitung</span></li>
@@ -259,6 +290,32 @@
         </ol>
         <p class="rules-note">Verstöße: Warnung, Kick oder Bann. Ingame jederzeit: <code>/regeln</code></p>
       </article>
+    </section>
+
+    <div class="scissor-line" aria-hidden="true"></div>
+
+    <section class="section" id="befehle" aria-labelledby="commands-title">
+      <h2 class="section-title reveal" id="commands-title">Wichtige Befehle</h2>
+      <article class="paper rip rip--c reveal cmd-card">
+        <span class="tape" aria-hidden="true"></span>
+        <ul class="cmd-grid">
+          <li><code>/regeln</code><span>Regeln, Befehle, Tipps</span></li>
+          <li><code>/menue</code><span>Server-Menü</span></li>
+          <li><code>/shop</code><span>Baustoffe, Deko, Essen</span></li>
+          <li><code>/jobs browse</code><span>Job aussuchen</span></li>
+          <li><code>/joblimit</code><span>Dein Job-Limit</span></li>
+          <li><code>/claim</code><span>Chunk sichern</span></li>
+          <li><code>/vote</code><span>Voten + Belohnung</span></li>
+          <li><code>/paycheck 1000</code><span>Geld als Scheck</span></li>
+          <li><code>/ah</code><span>Auktionshaus</span></li>
+          <li><code>/sethome Haus</code><span>Zuhause setzen</span></li>
+          <li><code>/tpa Name</code><span>Zu Freunden</span></li>
+          <li><code>/rtp</code><span>Zufallsort</span></li>
+          <li><code>/spawn</code><span>Zum Spawn</span></li>
+          <li><code>/vip</code><span>VIP-Infos</span></li>
+        </ul>
+      </article>
+      <p class="section-note reveal">Alles Weitere steht im Regelbuch, das sich beim ersten Beitritt öffnet.</p>
     </section>
 
     <!-- Discord -->
