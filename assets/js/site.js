@@ -198,23 +198,89 @@
     }
   });
 
-  // ── VIP-Shop (Tebex) ──────────────────────────────────────────────────────
-  // Sobald der Tebex-Shop steht, hier die Links der beiden Pakete eintragen (1 Monat / 6 Monate).
-  var TEBEX_LINKS = { "1": "", "6": "" };
-  document.querySelectorAll("[data-tebex]").forEach(function (button) {
-    var link = TEBEX_LINKS[button.getAttribute("data-tebex")];
-    if (link) {
-      button.href = link;
-      button.target = "_blank";
-      button.rel = "noopener";
-      return;
-    }
+  // ── VIP-Shop (Tebex Headless API, öffentlicher Webstore-Token – kein Geheimnis) ──
+  // Preise und Store-Status kommen live von Tebex. Solange der Store dort deaktiviert ist, steht
+  // "Shop öffnet bald" auf den Knöpfen; sobald er aktiv ist, führen sie direkt zum Paket.
+  var TEBEX = {
+    token: "14uln-14b95e542630ff119e704a9f0ca1ba026d215442",
+    store: "https://play-zevkev-de.tebex.store",
+    packages: { "1": 7717874, "6": 7717883 }
+  };
+  var tebexButtons = document.querySelectorAll("[data-tebex]");
+
+  function tebexSoon(button, text) {
     button.classList.add("is-soon");
     button.setAttribute("aria-disabled", "true");
+    button.removeAttribute("target");
+    button.href = "#pakete";
     var label = button.querySelector(".vip-buy-label");
-    if (label) label.textContent = "Shop öffnet bald";
-    button.addEventListener("click", function (event) { event.preventDefault(); });
-  });
+    if (label) label.textContent = text;
+  }
+
+  function euro(value) {
+    return Number(value).toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "\u00a0€";
+  }
+
+  if (tebexButtons.length) {
+    tebexButtons.forEach(function (button) {
+      button.addEventListener("click", function (event) {
+        if (button.getAttribute("aria-disabled") === "true") event.preventDefault();
+      });
+    });
+    var api = "https://headless.tebex.io/api/accounts/" + TEBEX.token;
+    Promise.all([
+      fetch(api).then(function (r) { return r.json(); }),
+      fetch(api + "/categories?includePackages=1").then(function (r) { return r.json(); })
+    ]).then(function (results) {
+      var account = results[0].data || {};
+      var found = {};
+      (results[1].data || []).forEach(function (category) {
+        (category.packages || []).forEach(function (pkg) { found[pkg.id] = pkg; });
+      });
+      tebexButtons.forEach(function (button) {
+        var key = button.getAttribute("data-tebex");
+        var pkg = found[TEBEX.packages[key]];
+        var price = document.querySelector('[data-tebex-price="' + key + '"]');
+        if (pkg && price && pkg.total_price != null) price.innerHTML = euro(pkg.total_price).replace(" ", "&nbsp;");
+        if (account.disabled || !pkg) {
+          tebexSoon(button, "Shop öffnet bald");
+          return;
+        }
+        button.classList.remove("is-soon");
+        button.removeAttribute("aria-disabled");
+        button.href = TEBEX.store + "/package/" + pkg.id;
+        button.target = "_blank";
+        button.rel = "noopener";
+      });
+    }).catch(function () {
+      tebexButtons.forEach(function (button) { tebexSoon(button, "Shop gerade nicht erreichbar"); });
+    });
+  }
+
+  // ── Voten ─────────────────────────────────────────────────────────────────
+  // Vote-Links (Serverlisten). Leere URL = "Link folgt".
+  var VOTE_LINKS = [
+    { name: "minecraft-server.eu", url: "" }
+  ];
+  var voteBox = document.getElementById("vote-links");
+  if (voteBox) {
+    VOTE_LINKS.forEach(function (site) {
+      var link = document.createElement("a");
+      link.className = "p-btn rip btn-accent";
+      link.textContent = site.url ? "Auf " + site.name + " voten" : site.name + " – Link folgt";
+      if (site.url) {
+        link.href = site.url;
+        link.target = "_blank";
+        link.rel = "noopener";
+      } else {
+        link.href = "#voten";
+        link.classList.add("is-soon");
+        link.setAttribute("aria-disabled", "true");
+        link.addEventListener("click", function (event) { event.preventDefault(); });
+      }
+      voteBox.appendChild(link);
+    });
+  }
 
   // ── Live-Status ───────────────────────────────────────────────────────────
   var statusBox = document.getElementById("status");
