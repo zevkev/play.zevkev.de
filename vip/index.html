@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>VIP – ZEVKEV Minecraft-Server</title>
-  <meta name="description" content="Unterstütze den ZEVKEV-Minecraft-Server (play.zevkev.de) mit dem VIP-Rang: 1 Monat 5,00 €, 6 Monate 25,00 €. VIP-Abzeichen und Claim-Limit 25 statt 15 – kein Pay-to-win.">
+  <meta name="description" content="Unterstütze den ZEVKEV-Minecraft-Server (play.zevkev.de) mit dem VIP-Rang: 1 Monat 5,00 €, 6 Monate 25,00 €. VIP-Abzeichen und Claim-Limit 30 statt 15 – kein Pay-to-win.">
   <link rel="canonical" href="https://play.zevkev.de/vip/">
   <meta name="theme-color" content="#234d70">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
@@ -60,7 +60,8 @@
       <span class="tape tape--right" aria-hidden="true"></span>
       <img class="vip-badge" src="/assets/img/badges/vip.png" alt="VIP-Abzeichen" width="22" height="9">
       <h1 id="vip-title">Unterstütze ZEVKEV</h1>
-      <p class="soon-banner"><span class="soon-tag">bald</span> Der VIP-Shop öffnet in Kürze – Preise und Vorteile stehen schon fest.</p>
+      <p class="soon-banner" data-vip-soon><span class="soon-tag">ab 18.10.</span> Der VIP-Shop öffnet am 18. Oktober – Preise und Vorteile stehen schon fest.</p>
+      <p class="vip-thanks" id="vip-thanks" role="status" hidden><b>Danke für deine Unterstützung!</b> Dein VIP-Rang ist in wenigen Minuten auf dem Server aktiv – auch wenn du gerade offline bist.</p>
       <p class="hero-lead">Server, Domain und viele Stunden Arbeit kosten Geld. Mit dem VIP-Rang hilfst du, dass ZEVKEV weiterläuft – und bekommst ein kleines Dankeschön.</p>
     </section>
 
@@ -77,7 +78,7 @@
         <article class="c-card rip rip--b rip--accent tilt-b reveal">
           <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.4 8.3 8 9 4.6-.7 8-4 8-9V6l-8-3z"/><path d="m9 12 2 2 4-4"/></svg></span>
           <h3>Mehr Claims</h3>
-          <p>Claim-Limit <b>25</b> statt 15 Chunks. Die Chunks kaufst du weiterhin ganz normal mit Ingame-Coins.</p>
+          <p>Claim-Limit <b>30</b> statt 15 Chunks. Die Chunks kaufst du weiterhin ganz normal mit Ingame-Coins.</p>
         </article>
         <article class="c-card rip rip--c tilt-c reveal">
           <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg></span>
@@ -91,6 +92,13 @@
 
     <section class="section" id="pakete" aria-labelledby="plans-title">
       <h2 class="section-title reveal" id="plans-title">Pakete</h2>
+      <form class="c-card rip rip--c reveal vip-player" id="vip-player-form" novalidate>
+        <label for="vip-player"><span class="vip-step">1</span><span>Dein Minecraft-Name</span></label>
+        <input id="vip-player" name="player" type="text" autocomplete="nickname" autocapitalize="off" spellcheck="false"
+               maxlength="16" placeholder="z. B. ZevKev_" aria-describedby="vip-status">
+        <p class="vip-status" id="vip-status" role="status" aria-live="polite">Der Rang kommt genau auf diesen Namen – so wie er im Spiel steht.</p>
+        <p class="vip-step-next"><span class="vip-step">2</span><span>Paket wählen und auf <b>Kaufen</b> klicken</span></p>
+      </form>
       <div class="vip-plans">
         <article class="c-card rip tilt-b reveal vip-plan">
           <h3>1 Monat</h3>
@@ -112,7 +120,8 @@
           </a>
         </article>
       </div>
-      <p class="section-note reveal" id="vip-shop-note">Bezahlt wird sicher über Tebex. Kein Abo: Die Laufzeit endet von selbst, ein weiterer Kauf verlängert sie.</p>
+      <p class="section-note reveal" id="vip-shop-note">Bezahlt wird sicher über Tebex. Kein Abo: Die Laufzeit endet von selbst, ein weiterer Kauf verlängert sie.
+        Lieber direkt bei Tebex? <a href="https://play-zevkev-de-store.tebex.store" data-tebex-store rel="noopener" target="_blank">Zum Tebex-Shop</a></p>
     </section>
 
     <div class="scissor-line" aria-hidden="true"></div>
@@ -122,8 +131,9 @@
         <span class="tape" aria-hidden="true"></span>
         <h2 id="how-title">So geht's</h2>
         <ol class="rules">
-          <li>Paket wählen und auf <b>Kaufen</b> klicken.</li>
-          <li>Bei Tebex deinen Minecraft-Namen eingeben und bezahlen.</li>
+          <li>Oben deinen Minecraft-Namen eingeben.</li>
+          <li>Paket wählen und auf <b>Kaufen</b> klicken – du landest direkt an der sicheren Tebex-Kasse.</li>
+          <li>Bei Tebex bezahlen.</li>
           <li>Der Rang ist nach wenigen Minuten aktiv – auch wenn du gerade offline bist.</li>
           <li>Rechnung und Kaufhistorie bekommst du von Tebex per E-Mail.</li>
         </ol>
@@ -136,7 +146,7 @@
           <li>Wird der Server vorübergehend oder dauerhaft abgeschaltet, besteht <b>kein Anspruch auf Erstattung</b>.</li>
           <li>Wer wegen Regelverstößen gebannt wird, verliert den Rang ohne Erstattung.</li>
           <li>Zahlung, Rechnung und Kaufhistorie laufen über Tebex (Tebex Limited).</li>
-          <li>Fragen zu Käufen: <a href="mailto:kontakt@zevkev.de">kontakt@zevkev.de</a>. Betreiber: ZevKev (siehe <a href="https://zevkev.de/impressum/">Impressum</a>).</li>
+          <li>Fragen zu Käufen: <a href="mailto:kontakt@zevkev.de">kontakt@zevkev.de</a>. Betreiber: ZevKev (siehe <a href="/impressum/">Impressum</a>).</li>
           <li>Gesetzliche Verbraucherrechte bleiben unberührt.</li>
         </ul>
       </article>
@@ -147,7 +157,7 @@
     <div class="footer-inner">
       <nav class="footer-links" aria-label="Weitere Seiten">
         <a href="/">play.zevkev.de</a>
-        <a href="https://zevkev.de/impressum/">Impressum</a>
+        <a href="/impressum/">Impressum</a>
         <a href="https://zevkev.de/datenschutz/">Datenschutz</a>
       </nav>
       <p class="footer-note">Kein offizielles Minecraft-Produkt. Nicht von Mojang oder Microsoft genehmigt oder mit ihnen verbunden.</p>

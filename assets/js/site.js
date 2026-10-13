@@ -199,40 +199,164 @@
   });
 
   // ── VIP-Shop (Tebex Headless API, öffentlicher Webstore-Token – kein Geheimnis) ──
-  // Preise und Store-Status kommen live von Tebex. Solange der Store dort deaktiviert ist, steht
-  // "Shop öffnet bald" auf den Knöpfen; sobald er aktiv ist, führen sie direkt zum Paket.
+  // Eigener Shop: Minecraft-Name eingeben, Paket wählen → ZEVKEV legt bei Tebex einen Warenkorb auf diesen Namen an,
+  // legt das Paket hinein und schickt direkt zur Tebex-Kasse (pay.tebex.io). Der private Schlüssel wird dafür nicht
+  // gebraucht (Tebex-Kasse geht auch, während der Store noch im Review ist).
   var TEBEX = {
-    token: "14uln-14b95e542630ff119e704a9f0ca1ba026d215442",
-    store: "https://play-zevkev-de.tebex.store",
-    packages: { "1": 7717874, "6": 7717883 }
+    token: "14y64-e8b4846b63b854aecb0748ab9bfd34ce3de1e89c",
+    store: "https://play-zevkev-de-store.tebex.store",
+    page: "https://play.zevkev.de/vip/",
+    packages: { "1": 7736841, "6": 7736844 }
   };
+  var TEBEX_API = "https://headless.tebex.io/api";
+  // Start des Shops: 18.10.2026, 0 Uhr deutscher Zeit (Tebex-Store bis dahin im Review). Vorher "ab 18.10." und
+  // gesperrte Knöpfe, danach automatisch offen – ohne neues Hochladen. Elemente mit data-vip-soon verschwinden dann.
+  var VIP_OPENS = new Date("2026-10-18T00:00:00+02:00").getTime();
+  var vipOpen = Date.now() >= VIP_OPENS;
+  document.querySelectorAll("[data-vip-soon]").forEach(function (element) { element.hidden = vipOpen; });
   var tebexButtons = document.querySelectorAll("[data-tebex]");
+  var playerInput = document.getElementById("vip-player");
+  var vipStatus = document.getElementById("vip-status");
+  var vipStatusDefault = vipStatus ? vipStatus.textContent : "";
+  var MC_NAME = /^[A-Za-z0-9_]{3,16}$/;
 
   function tebexSoon(button, text) {
     button.classList.add("is-soon");
     button.setAttribute("aria-disabled", "true");
-    button.removeAttribute("target");
-    button.href = "#pakete";
     var label = button.querySelector(".vip-buy-label");
     if (label) label.textContent = text;
   }
 
   function euro(value) {
-    return Number(value).toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "\u00a0€";
+    return Number(value).toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
+  }
+
+  // Statuszeile unter dem Namensfeld; parts = Text oder Knoten (kein innerHTML – der Name kommt vom Nutzer)
+  function setVipStatus(kind, parts) {
+    if (!vipStatus) return;
+    vipStatus.className = "vip-status" + (kind ? " is-" + kind : "");
+    vipStatus.textContent = "";
+    (Array.isArray(parts) ? parts : [parts]).forEach(function (part) {
+      vipStatus.appendChild(typeof part === "string" ? document.createTextNode(part) : part);
+    });
+  }
+
+  function storeLink(packageId, text) {
+    var link = document.createElement("a");
+    link.href = TEBEX.store + (packageId ? "/package/" + packageId : "");
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.textContent = text;
+    return link;
+  }
+
+  function postJson(url, body) {
+    return fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(body)
+    }).then(function (response) {
+      return response.json().catch(function () { return {}; }).then(function (data) {
+        if (!response.ok) {
+          var error = new Error(data.title || data.detail || ("HTTP " + response.status));
+          error.status = response.status;
+          throw error;
+        }
+        return data;
+      });
+    });
+  }
+
+  function setBusy(busy, active) {
+    tebexButtons.forEach(function (button) {
+      if (button.classList.contains("is-soon")) return;
+      button.classList.toggle("is-busy", busy);
+      if (busy) button.setAttribute("aria-disabled", "true"); else button.removeAttribute("aria-disabled");
+      var label = button.querySelector(".vip-buy-label");
+      if (label) label.textContent = busy && button === active ? "Einen Moment …" : "Kaufen";
+    });
+    if (playerInput) playerInput.disabled = busy;
+  }
+
+  function checkout(button, name, packageId) {
+    setBusy(true, button);
+    setVipStatus("", "Warenkorb für " + name + " wird angelegt …");
+    postJson(TEBEX_API + "/accounts/" + TEBEX.token + "/baskets", {
+      username: name,
+      complete_url: TEBEX.page + "?danke=1",
+      cancel_url: TEBEX.page + "?abgebrochen=1#pakete",
+      complete_auto_redirect: true
+    }).then(function (basket) {
+      return postJson(TEBEX_API + "/baskets/" + basket.data.ident + "/packages", { package_id: String(packageId), quantity: 1 });
+    }).then(function (basket) {
+      var link = basket.data && basket.data.links && basket.data.links.checkout;
+      if (!link) throw new Error("Kein Kassen-Link");
+      setVipStatus("ok", "Weiter zur Tebex-Kasse …");
+      window.location.href = link;
+    }).catch(function (error) {
+      setBusy(false);
+      if (error.status === 404 && /username/i.test(error.message)) {
+        setVipStatus("error", "Den Minecraft-Namen " + name + " gibt es nicht. Bitte genau so schreiben wie im Spiel (Java Edition).");
+        if (playerInput) playerInput.focus();
+        return;
+      }
+      setVipStatus("error", ["Das hat gerade nicht geklappt. Du kannst direkt im ", storeLink(packageId, "Tebex-Shop"), " kaufen."]);
+    });
+  }
+
+  var vipParams = new URLSearchParams(window.location.search);
+  if (playerInput) {
+    try { playerInput.value = localStorage.getItem("zevkev-mc-name") || ""; } catch (e) { /* ohne Speicher */ }
+    // /vip im Spiel schickt den eigenen Namen mit (?name=…)
+    var fromGame = (vipParams.get("name") || "").trim();
+    if (MC_NAME.test(fromGame)) playerInput.value = fromGame;
+    playerInput.addEventListener("input", function () {
+      if (vipStatus && vipStatus.classList.contains("is-error")) setVipStatus("", vipStatusDefault);
+    });
+    var playerForm = document.getElementById("vip-player-form");
+    if (playerForm) playerForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var plans = document.querySelector(".vip-plans");
+      if (plans) plans.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  }
+
+  var picked = document.querySelector('[data-tebex="' + (vipParams.get("paket") || "") + '"]');
+  if (picked && picked.closest(".vip-plan")) picked.closest(".vip-plan").classList.add("is-picked");
+  if (vipParams.has("danke")) {
+    var thanks = document.getElementById("vip-thanks");
+    if (thanks) thanks.hidden = false;
+  } else if (vipParams.has("abgebrochen")) {
+    setVipStatus("", "Kauf abgebrochen – es wurde nichts bezahlt.");
   }
 
   if (tebexButtons.length) {
+    if (!vipOpen) {
+      tebexButtons.forEach(function (button) { tebexSoon(button, "Ab 18.10."); });
+      if (!vipParams.has("danke")) setVipStatus("", "Der Shop öffnet am 18.10. – dann geht es hier mit deinem Namen direkt zur Kasse.");
+    }
     tebexButtons.forEach(function (button) {
       button.addEventListener("click", function (event) {
-        if (button.getAttribute("aria-disabled") === "true") event.preventDefault();
+        event.preventDefault();
+        if (button.getAttribute("aria-disabled") === "true") return;
+        var name = playerInput ? playerInput.value.trim() : "";
+        if (!MC_NAME.test(name)) {
+          setVipStatus("error", "Bitte zuerst deinen Minecraft-Namen eingeben (3 bis 16 Zeichen: Buchstaben, Zahlen, _).");
+          if (playerInput) {
+            playerInput.focus();
+            playerInput.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+          return;
+        }
+        try { localStorage.setItem("zevkev-mc-name", name); } catch (e) { /* ohne Speicher */ }
+        checkout(button, name, TEBEX.packages[button.getAttribute("data-tebex")]);
       });
     });
-    var api = "https://headless.tebex.io/api/accounts/" + TEBEX.token;
+    var tebexAccount = TEBEX_API + "/accounts/" + TEBEX.token;
     Promise.all([
-      fetch(api).then(function (r) { return r.json(); }),
-      fetch(api + "/categories?includePackages=1").then(function (r) { return r.json(); })
+      fetch(tebexAccount).then(function (r) { return r.json(); }),
+      fetch(tebexAccount + "/categories?includePackages=1").then(function (r) { return r.json(); })
     ]).then(function (results) {
-      var account = results[0].data || {};
       var found = {};
       (results[1].data || []).forEach(function (category) {
         (category.packages || []).forEach(function (pkg) { found[pkg.id] = pkg; });
@@ -242,18 +366,9 @@
         var pkg = found[TEBEX.packages[key]];
         var price = document.querySelector('[data-tebex-price="' + key + '"]');
         if (pkg && price && pkg.total_price != null) price.innerHTML = euro(pkg.total_price).replace(" ", "&nbsp;");
-        if (account.disabled || !pkg) {
-          tebexSoon(button, "Shop öffnet bald");
-          return;
-        }
-        button.classList.remove("is-soon");
-        button.removeAttribute("aria-disabled");
-        button.href = TEBEX.store + "/package/" + pkg.id;
-        button.target = "_blank";
-        button.rel = "noopener";
       });
     }).catch(function () {
-      tebexButtons.forEach(function (button) { tebexSoon(button, "Shop gerade nicht erreichbar"); });
+      // Tebex gerade nicht erreichbar: Knöpfe bleiben aktiv, der Kauf zeigt dann den Link zum Tebex-Shop
     });
   }
 
