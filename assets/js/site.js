@@ -375,7 +375,8 @@
   // ── Voten ─────────────────────────────────────────────────────────────────
   // Vote-Links (Serverlisten). Leere URL = "Link folgt".
   var VOTE_LINKS = [
-    { name: "minecraft-server.eu", url: "https://minecraft-server.eu/vote/index/23B59" }
+    { name: "minecraft-server.eu", url: "https://minecraft-server.eu/vote/index/23B59" },
+    { name: "minecraft-serverlist.net", url: "https://www.minecraft-serverlist.net/vote/60980" }
   ];
   var voteBox = document.getElementById("vote-links");
   if (voteBox) {
